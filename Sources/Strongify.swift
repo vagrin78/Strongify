@@ -6,6 +6,8 @@
 //  Copyright © 2017 Strongify. All rights reserved.
 //
 
+import Foundation
+
 /// This file is code-generated, don't modify.
 
 
@@ -1125,3 +1127,31 @@ public func strongify<Context1: AnyObject, Context2: AnyObject, Context3: AnyObj
     }
 }
 
+// MARK: - Output
+/// Creates a closure that automatically deals with weak-strong dance with return Output? type
+///
+/// - Parameters:
+///   - context1: Any context object to weakify and strongify.
+///   - closure: Closure to execute instead of the original one.
+/// - Return:
+///     -  Output?
+public func strongify<Context1: AnyObject, Output: AnyObject>(weak context1: Context1?, closure: @escaping(Context1) -> Output?) -> () -> Output? {
+    return { [weak context1] in
+        guard let strongContext1 = context1 else { return nil }
+        return closure(strongContext1)
+    }
+}
+
+public func strongify<Context1: AnyObject, Argument1, Output: AnyObject>(weak context1: Context1?, closure: @escaping(Context1, Argument1) -> Output?) -> (Argument1) -> Output? {
+    return { [weak context1] argument1 in
+        guard let strongContext1 = context1 else { return nil }
+        return closure(strongContext1, argument1)
+    }
+}
+
+public func strongify<Context1: AnyObject, Argument1, Argument2, Output: AnyObject>(weak context1: Context1?, closure: @escaping(Context1, Argument1, Argument2) -> Output?) -> (Argument1, Argument2) -> Output? {
+    return { [weak context1] argument1, argument2 in
+        guard let strongContext1 = context1 else { return nil }
+        return closure(strongContext1, argument1, argument2)
+    }
+}
